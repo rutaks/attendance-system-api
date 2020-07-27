@@ -3,7 +3,16 @@ import { GenericResponse } from "./../models/GenericResponse";
 import { NextFunction, Request, Response } from "express";
 import ErrorHandler from "../models/ErrorHandler";
 
+/**
+ * Class representing the authentication controller
+ * @since version 1.0
+ */
 class AuthController {
+  /**
+   * Controller to process login requests
+   * @param req Express request
+   * @param res Express response
+   */
   static async login(req: Request, res: Response, next: NextFunction) {
     let { username, password } = req.body;
     if (!(username && password)) {
