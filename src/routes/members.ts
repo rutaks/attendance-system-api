@@ -5,6 +5,10 @@ import MemberController from "../controllers/MemberController";
 
 const router = Router();
 
-router.post("/", MemberController.createMember);
+router.post(
+  "/",
+  [checkJwt, checkRole(["ADMIN"])],
+  MemberController.createMember
+);
 
 export default router;
