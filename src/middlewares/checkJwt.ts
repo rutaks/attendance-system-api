@@ -12,7 +12,7 @@ import ErrorHandler from "../models/ErrorHandler";
  * @param next NextFunction to continue processes
  */
 export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
-  const token = <string>req.headers["Authorization"];
+  const token = <string>req.headers["authorization"];
   let jwtPayload: any;
   try {
     jwtPayload = <any>jwt.verify(token, config.jwtSecret);
@@ -24,6 +24,6 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
     res.setHeader("token", newToken);
     next();
   } catch (error) {
-    throw new ErrorHandler(500, "Could obtain JWT");
+    throw new ErrorHandler(500, `Could obtain JWT ${error}`);
   }
 };
