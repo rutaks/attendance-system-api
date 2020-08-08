@@ -3,11 +3,11 @@
   "version": "0.0.1",
   "description": "Awesome project developed with TypeORM.",
   "devDependencies": {
-    "ts-node": "3.3.0",
-    "@types/node": "^8.0.29",
-    "typescript": "3.3.3333",
     "@types/del": "^4.0.0",
-    "nodemon": "^2.0.4"
+    "@types/node": "^8.0.29",
+    "nodemon": "^2.0.4",
+    "ts-node": "3.3.0",
+    "typescript": "3.3.3333"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -21,6 +21,7 @@
     "class-validator": "^0.9.1",
     "cloudinary": "^1.22.0",
     "cors": "^2.8.5",
+    "crypto-ts": "^1.0.2",
     "del": "^5.1.0",
     "dotenv": "^8.2.0",
     "express": "^4.15.4",

@@ -7,4 +7,5 @@ dotenv.config();
 export default {
   jwtSecret: process.env.JWT_SECRET,
   port: process.env.PORT,
+  encryptKey: process.env.ENCRYPT_KEY,
 };
