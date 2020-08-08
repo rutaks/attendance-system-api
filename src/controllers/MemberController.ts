@@ -22,6 +22,32 @@ class MemberController {
     }
   }
 
+  static async modifyMember(req: Request, res: Response, next: NextFunction) {
+    try {
+      const memberDTO = new MemberDTO(req.body);
+      const { memberId } = req.params;
+      await validateDTO(memberDTO);
+      const member = await MemberService.modifyMember(memberId, memberDTO);
+      res.send(
+        new GenericResponse(200, "Member modification successful", { member })
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async removeMember(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { memberId } = req.params;
+      await MemberService.removeMember(memberId);
+      res.send(
+        new GenericResponse(200, "Member removed successfully", { memberId })
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async getMembers(req: Request, res: Response, next: NextFunction) {
     try {
       let page = (req.query.page || 0).toString();
@@ -37,7 +63,6 @@ class MemberController {
         })
       );
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

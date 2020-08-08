@@ -11,6 +11,22 @@ router.post(
   MemberController.createMember
 );
 
-router.get("/", [checkJwt, checkRole(["ADMIN"])], MemberController.getMembers);
+router.put(
+  "/:memberId",
+  [checkJwt, checkRole(["ADMIN", "CONSUMER"])],
+  MemberController.modifyMember
+);
+
+router.delete(
+  "/:memberId",
+  [checkJwt, checkRole(["ADMIN", "CONSUMER"])],
+  MemberController.removeMember
+);
+
+router.get(
+  "/",
+  [checkJwt, checkRole(["ADMIN", "CONSUMER"])],
+  MemberController.getMembers
+);
 
 export default router;
