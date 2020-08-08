@@ -21,6 +21,26 @@ class MemberController {
       next(error);
     }
   }
+
+  static async getMembers(req: Request, res: Response, next: NextFunction) {
+    try {
+      let page = (req.query.page || 0).toString();
+      let size = (req.query.size || 10).toString();
+      const { members, totalCount } = await MemberService.getMembers(
+        size,
+        page
+      );
+      res.send(
+        new GenericResponse(200, "Members retreived successfully", {
+          members,
+          totalCount,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
 }
 
 export default MemberController;

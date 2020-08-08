@@ -26,6 +26,14 @@ class MemberService {
       throw new ErrorHandler(400, "Could not create member", error);
     }
   }
+
+  static async getMembers(sizeStr: string = "10", pageStr: string = "0") {
+    const size = parseInt(sizeStr);
+    const page = parseInt(pageStr);
+    const members = await Member.find({ skip: page, take: size });
+    const totalCount = await Member.count({});
+    return { members, totalCount };
+  }
 }
 
 export default MemberService;

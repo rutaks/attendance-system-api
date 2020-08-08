@@ -11,4 +11,6 @@ router.post(
   MemberController.createMember
 );
 
+router.get("/", [checkJwt, checkRole(["ADMIN"])], MemberController.getMembers);
+
 export default router;
