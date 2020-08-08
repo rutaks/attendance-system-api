@@ -2,6 +2,7 @@ import { Fellowship } from "./../entity/Fellowship";
 import { Member } from "./../entity/Member";
 import ErrorHandler from "../models/ErrorHandler";
 import { MemberDTO } from "./../dtos/MemberDTO";
+import { Branch } from "../entity/Branch";
 class MemberService {
   static async createMember(memberDTO: MemberDTO) {
     if (!memberDTO.email && !memberDTO.phoneNumber) {
@@ -9,12 +10,17 @@ class MemberService {
     }
     try {
       let member = new Member();
+
       member.firstName = memberDTO.firstName;
       member.lastName = memberDTO.lastName;
       member.email = memberDTO.email;
       member.phoneNumber = memberDTO.phoneNumber;
       member.nationalId = memberDTO.nationalId;
       member.passportId = memberDTO.passportId;
+
+      if (memberDTO.branchId) {
+        member.branch = await Branch.findOneOrFail(memberDTO.branchId);
+      }
 
       if (memberDTO.fellowshipId) {
         member.fellowship = await Fellowship.findOneOrFail(
@@ -39,6 +45,10 @@ class MemberService {
       member.phoneNumber = memberDTO.phoneNumber;
       member.nationalId = memberDTO.nationalId;
       member.passportId = memberDTO.passportId;
+
+      if (memberDTO.branchId) {
+        member.branch = await Branch.findOneOrFail(memberDTO.branchId);
+      }
 
       if (memberDTO.fellowshipId) {
         member.fellowship = await Fellowship.findOneOrFail(

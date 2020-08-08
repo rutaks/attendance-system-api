@@ -19,6 +19,7 @@ export class MemberDTO {
   nationalId: string;
   passportId: string;
   fellowshipId: number;
+  branchId: number;
 
   constructor(responseBody?: any) {
     this.firstName = responseBody.firstName;
@@ -28,5 +29,6 @@ export class MemberDTO {
     this.nationalId = responseBody.nationalId;
     this.passportId = responseBody.passportId;
     this.fellowshipId = responseBody.fellowshipId;
+    this.branchId = responseBody.branchId;
   }
 }
