@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import config from "../configs/config";
+import { Branch } from "./Branch";
 import { Fellowship } from "./Fellowship";
 
 @Entity({ name: "members" })
@@ -29,6 +30,9 @@ export class Member extends BaseEntity {
 
   @ManyToOne((type) => Fellowship, (fellowship) => fellowship.members)
   fellowship: Fellowship;
+
+  @ManyToOne((type) => Branch, (branch) => branch.members)
+  branch: Branch;
 
   @BeforeInsert()
   encryptPersonalInfos() {
