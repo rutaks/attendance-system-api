@@ -16,11 +16,11 @@ class AuthController {
   static async login(req: Request, res: Response, next: NextFunction) {
     let { username, password } = req.body;
     if (!(username && password)) {
-      throw new ErrorHandler(400, "Provide Username & Password");
+      throw new ErrorHandler(400, "Provide Username & Password", {});
     }
     try {
-      let token: string = await AuthService.getUserToken(username, password);
-      res.send(new GenericResponse(200, "Login successful", { token }));
+      let { user, token } = await AuthService.getUserToken(username, password);
+      res.send(new GenericResponse(400, "Login successful", { user, token }));
     } catch (error) {
       next(error);
     }
