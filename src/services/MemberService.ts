@@ -5,7 +5,6 @@ import { MemberDTO } from "./../dtos/MemberDTO";
 import { Branch } from "../entity/Branch";
 class MemberService {
   static async createMember(memberDTO: MemberDTO) {
-    console.log("CHECKING");
     if (!memberDTO.email && !memberDTO.phoneNumber) {
       throw new ErrorHandler(400, "Provide a phone number or email");
     }
