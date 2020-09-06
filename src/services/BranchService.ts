@@ -2,8 +2,14 @@ import { Branch } from "../entity/Branch";
 import ErrorHandler from "../models/ErrorHandler";
 
 class BranchService {
-  static async getBranches() {
-    return Branch.find({});
+  static async getBranches(sizeStr: string = "10", pageStr: string = "0") {
+    const take = parseInt(sizeStr);
+    const skip = parseInt(pageStr);
+    const [branches, count] = await Branch.findAndCount({ skip, take });
+    return {
+      content: branches,
+      paged: { totalCount: count, page: skip, size: take },
+    };
   }
 
   static async createBranch(name: string) {

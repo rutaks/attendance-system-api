@@ -4,12 +4,16 @@ import BranchService from "../services/BranchService";
 
 class BranchController {
   static async getBranches(req: Request, res: Response, next: NextFunction) {
-    const branches = await BranchService.getBranches();
-    res.send(
-      new GenericResponse(200, "Branches retreived successfully", {
-        branches,
-      })
-    );
+    try {
+      let page = (req.query.page || 0).toString();
+      let size = (req.query.size || 10).toString();
+      const response = await BranchService.getBranches(size, page);
+      res.send(
+        new GenericResponse(200, "Branches retreived successfully", response)
+      );
+    } catch (error) {
+      next(error);
+    }
   }
 
   static async createBranch(req: Request, res: Response, next: NextFunction) {
