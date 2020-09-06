@@ -52,14 +52,11 @@ class MemberController {
     try {
       let page = (req.query.page || 0).toString();
       let size = (req.query.size || 10).toString();
-      const { members, totalCount } = await MemberService.getMembers(
-        size,
-        page
-      );
+      const { content, paged } = await MemberService.getMembers(size, page);
       res.send(
         new GenericResponse(200, "Members retreived successfully", {
-          members,
-          totalCount,
+          content,
+          paged,
         })
       );
     } catch (error) {

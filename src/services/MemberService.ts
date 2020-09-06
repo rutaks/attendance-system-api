@@ -5,6 +5,7 @@ import { MemberDTO } from "./../dtos/MemberDTO";
 import { Branch } from "../entity/Branch";
 class MemberService {
   static async createMember(memberDTO: MemberDTO) {
+    console.log("CHECKING");
     if (!memberDTO.email && !memberDTO.phoneNumber) {
       throw new ErrorHandler(400, "Provide a phone number or email");
     }
@@ -17,6 +18,7 @@ class MemberService {
       member.phoneNumber = memberDTO.phoneNumber;
       member.nationalId = memberDTO.nationalId;
       member.passportId = memberDTO.passportId;
+      member.location = memberDTO.location;
 
       if (memberDTO.branchId) {
         member.branch = await Branch.findOneOrFail(memberDTO.branchId);
@@ -45,6 +47,7 @@ class MemberService {
       member.phoneNumber = memberDTO.phoneNumber;
       member.nationalId = memberDTO.nationalId;
       member.passportId = memberDTO.passportId;
+      member.location = memberDTO.location;
 
       if (memberDTO.branchId) {
         member.branch = await Branch.findOneOrFail(memberDTO.branchId);
@@ -74,11 +77,23 @@ class MemberService {
   }
 
   static async getMembers(sizeStr: string = "10", pageStr: string = "0") {
-    const size = parseInt(sizeStr);
-    const page = parseInt(pageStr);
-    const members = await Member.find({ skip: page, take: size });
-    const totalCount = await Member.count({});
-    return { members, totalCount };
+    const take = parseInt(sizeStr);
+    const skip = parseInt(pageStr);
+    const [members, count] = await Member.findAndCount({ skip, take });
+    return {
+      content: members,
+      paged: { totalCount: count, page: skip, size: take },
+    };
+  }
+
+  static async exists(options: {
+    email?: string;
+    phoneNumber?: string;
+    nationalId?: string;
+    passportId?: string;
+  }): Promise<Boolean> {
+    const foundMember = await Member.findOne(options);
+    return foundMember !== null;
   }
 }
 
