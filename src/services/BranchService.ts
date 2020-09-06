@@ -1,15 +1,15 @@
+import FilterDTO from "../dtos/FilterDTO";
 import { Branch } from "../entity/Branch";
 import ErrorHandler from "../models/ErrorHandler";
 
 class BranchService {
-  static async getBranches(sizeStr: string = "10", pageStr: string = "0") {
-    const take = parseInt(sizeStr);
-    const skip = parseInt(pageStr);
-    const [branches, count] = await Branch.findAndCount({ skip, take });
-    return {
-      content: branches,
-      paged: { totalCount: count, page: skip, size: take },
-    };
+  static async getBranches(filter: FilterDTO) {
+    const { page, size } = filter;
+    const [branches, count] = await Branch.findAndCount({
+      skip: page,
+      take: size,
+    });
+    return { content: branches, paged: { totalCount: count, page, size } };
   }
 
   static async createBranch(name: string) {

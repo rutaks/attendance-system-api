@@ -1,13 +1,12 @@
 import { NextFunction, Request, Response } from "express";
+import FilterDTO from "../dtos/FilterDTO";
 import { GenericResponse } from "../models/GenericResponse";
 import BranchService from "../services/BranchService";
 
 class BranchController {
   static async getBranches(req: Request, res: Response, next: NextFunction) {
     try {
-      let page = (req.query.page || 0).toString();
-      let size = (req.query.size || 10).toString();
-      const response = await BranchService.getBranches(size, page);
+      const response = await BranchService.getBranches(new FilterDTO(req));
       res.send(
         new GenericResponse(200, "Branches retreived successfully", response)
       );

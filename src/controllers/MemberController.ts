@@ -4,6 +4,7 @@ import { NextFunction, Response } from "express";
 import { Request } from "express";
 import { validateDTO } from "../utils/validateDTO";
 import MemberService from "../services/MemberService";
+import FilterDTO from "../dtos/FilterDTO";
 /**
  * Class representing the member operation controller
  * @since version 1.0
@@ -50,9 +51,9 @@ class MemberController {
 
   static async getMembers(req: Request, res: Response, next: NextFunction) {
     try {
-      let page = (req.query.page || 0).toString();
-      let size = (req.query.size || 10).toString();
-      const { content, paged } = await MemberService.getMembers(size, page);
+      const { content, paged } = await MemberService.getMembers(
+        new FilterDTO(req)
+      );
       res.send(
         new GenericResponse(200, "Members retreived successfully", {
           content,
