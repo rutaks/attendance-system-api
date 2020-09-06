@@ -2,6 +2,7 @@ import { Fellowship } from "./../entity/Fellowship";
 import { Member } from "./../entity/Member";
 import ErrorHandler from "../models/ErrorHandler";
 import { MemberDTO } from "./../dtos/MemberDTO";
+import { Branch } from "../entity/Branch";
 class MemberService {
   static async createMember(memberDTO: MemberDTO) {
     if (!memberDTO.email && !memberDTO.phoneNumber) {
@@ -9,12 +10,18 @@ class MemberService {
     }
     try {
       let member = new Member();
+
       member.firstName = memberDTO.firstName;
       member.lastName = memberDTO.lastName;
       member.email = memberDTO.email;
       member.phoneNumber = memberDTO.phoneNumber;
       member.nationalId = memberDTO.nationalId;
       member.passportId = memberDTO.passportId;
+      member.location = memberDTO.location;
+
+      if (memberDTO.branchId) {
+        member.branch = await Branch.findOneOrFail(memberDTO.branchId);
+      }
 
       if (memberDTO.fellowshipId) {
         member.fellowship = await Fellowship.findOneOrFail(
@@ -39,6 +46,11 @@ class MemberService {
       member.phoneNumber = memberDTO.phoneNumber;
       member.nationalId = memberDTO.nationalId;
       member.passportId = memberDTO.passportId;
+      member.location = memberDTO.location;
+
+      if (memberDTO.branchId) {
+        member.branch = await Branch.findOneOrFail(memberDTO.branchId);
+      }
 
       if (memberDTO.fellowshipId) {
         member.fellowship = await Fellowship.findOneOrFail(
@@ -64,11 +76,23 @@ class MemberService {
   }
 
   static async getMembers(sizeStr: string = "10", pageStr: string = "0") {
-    const size = parseInt(sizeStr);
-    const page = parseInt(pageStr);
-    const members = await Member.find({ skip: page, take: size });
-    const totalCount = await Member.count({});
-    return { members, totalCount };
+    const take = parseInt(sizeStr);
+    const skip = parseInt(pageStr);
+    const [members, count] = await Member.findAndCount({ skip, take });
+    return {
+      content: members,
+      paged: { totalCount: count, page: skip, size: take },
+    };
+  }
+
+  static async exists(options: {
+    email?: string;
+    phoneNumber?: string;
+    nationalId?: string;
+    passportId?: string;
+  }): Promise<Boolean> {
+    const foundMember = await Member.findOne(options);
+    return foundMember !== null;
   }
 }
 

@@ -16,17 +16,21 @@ export class MemberDTO {
   @IsOptional()
   @IsEmail()
   email: string;
+  location: string;
   nationalId: string;
   passportId: string;
   fellowshipId: number;
+  branchId: number;
 
   constructor(responseBody?: any) {
     this.firstName = responseBody.firstName;
     this.lastName = responseBody.lastName;
     this.phoneNumber = responseBody.phoneNumber;
     this.email = responseBody.email;
+    this.location = responseBody.location;
     this.nationalId = responseBody.nationalId;
     this.passportId = responseBody.passportId;
     this.fellowshipId = responseBody.fellowshipId;
+    this.branchId = responseBody.branchId;
   }
 }
