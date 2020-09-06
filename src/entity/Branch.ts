@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Member } from "./Member";
+import { Service } from "./Service";
 
 @Entity({ name: "branches" })
 export class Branch extends BaseEntity {
@@ -17,4 +18,6 @@ export class Branch extends BaseEntity {
   name: string;
   @OneToMany((type) => Member, (member) => member.branch)
   members: Member[];
+  @OneToMany((type) => Service, (service) => service.branch)
+  services: Service[];
 }

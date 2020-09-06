@@ -1,9 +1,15 @@
+import FilterDTO from "../dtos/FilterDTO";
 import { Branch } from "../entity/Branch";
 import ErrorHandler from "../models/ErrorHandler";
 
 class BranchService {
-  static async getBranches() {
-    return Branch.find({});
+  static async getBranches(filter: FilterDTO) {
+    const { page, size } = filter;
+    const [branches, count] = await Branch.findAndCount({
+      skip: page,
+      take: size,
+    });
+    return { content: branches, paged: { totalCount: count, page, size } };
   }
 
   static async createBranch(name: string) {

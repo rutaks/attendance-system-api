@@ -3,6 +3,7 @@ import { Member } from "./../entity/Member";
 import ErrorHandler from "../models/ErrorHandler";
 import { MemberDTO } from "./../dtos/MemberDTO";
 import { Branch } from "../entity/Branch";
+import FilterDTO from "../dtos/FilterDTO";
 class MemberService {
   static async createMember(memberDTO: MemberDTO) {
     if (!memberDTO.email && !memberDTO.phoneNumber) {
@@ -75,14 +76,13 @@ class MemberService {
     }
   }
 
-  static async getMembers(sizeStr: string = "10", pageStr: string = "0") {
-    const take = parseInt(sizeStr);
-    const skip = parseInt(pageStr);
-    const [members, count] = await Member.findAndCount({ skip, take });
-    return {
-      content: members,
-      paged: { totalCount: count, page: skip, size: take },
-    };
+  static async getMembers(filter: FilterDTO) {
+    const { page, size } = filter;
+    const [members, count] = await Member.findAndCount({
+      skip: page,
+      take: size,
+    });
+    return { content: members, paged: { totalCount: count, page, size } };
   }
 
   static async exists(options: {
