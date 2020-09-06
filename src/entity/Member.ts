@@ -19,19 +19,23 @@ export class Member extends BaseEntity {
   firstName: string;
   @Column()
   lastName: string;
-  @Column({ nullable: true })
+  @Column({ nullable: true, unique: true })
   phoneNumber: string;
-  @Column({ nullable: true })
+  @Column({ nullable: true, unique: true })
   email: string;
-  @Column({ nullable: true })
+  @Column({ nullable: true, unique: true })
   nationalId: string;
-  @Column({ nullable: true })
+  @Column({ nullable: true, unique: true })
   passportId: string;
+  @Column({ nullable: true })
+  location: string;
 
-  @ManyToOne((type) => Fellowship, (fellowship) => fellowship.members)
+  @ManyToOne((type) => Fellowship, (fellowship) => fellowship.members, {
+    eager: true,
+  })
   fellowship: Fellowship;
 
-  @ManyToOne((type) => Branch, (branch) => branch.members)
+  @ManyToOne((type) => Branch, (branch) => branch.members, { eager: true })
   branch: Branch;
 
   @BeforeInsert()
