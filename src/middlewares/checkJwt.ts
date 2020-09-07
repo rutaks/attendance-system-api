@@ -24,6 +24,6 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
     res.setHeader("token", newToken);
     next();
   } catch (error) {
-    throw new ErrorHandler(500, `Could obtain JWT ${error}`);
+    throw new ErrorHandler(401, `Could obtain JWT ${error}`);
   }
 };

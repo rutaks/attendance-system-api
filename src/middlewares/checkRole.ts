@@ -17,7 +17,7 @@ export const checkRole = (roles: Array<string>) => {
     try {
       user = await userRepository.findOneOrFail(id);
       if (roles.indexOf(user.role) > -1) next();
-      else throw new ErrorHandler(404, `Invalid User Role`);
+      else throw new ErrorHandler(401, `Invalid User Role`);
     } catch (error) {
       next(error);
     }
