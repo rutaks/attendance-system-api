@@ -64,6 +64,18 @@ class MemberController {
       next(error);
     }
   }
+
+  static async getMemberById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { memberId } = req.params;
+      const member = await MemberService.getMemberById(memberId);
+      res.send(
+        new GenericResponse(200, "Member retreived successfully", { member })
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default MemberController;

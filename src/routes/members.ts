@@ -29,4 +29,10 @@ router.get(
   MemberController.getMembers
 );
 
+router.get(
+  "/:memberId",
+  [checkJwt, checkRole(["ADMIN", "CONSUMER"])],
+  MemberController.getMemberById
+);
+
 export default router;

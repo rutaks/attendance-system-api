@@ -85,6 +85,11 @@ class MemberService {
     return { content: members, paged: { totalCount: count, page, size } };
   }
 
+  static async getMemberById(memberId: string) {
+    const member = await Member.findOne(memberId);
+    return member;
+  }
+
   static async exists(options: {
     email?: string;
     phoneNumber?: string;
