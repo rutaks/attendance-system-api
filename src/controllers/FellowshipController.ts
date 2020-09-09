@@ -7,7 +7,7 @@ class FellowshipController {
     const fellowships = await FellowshipService.getFellowships();
     res.send(
       new GenericResponse(200, "Fellowships retreived successfully", {
-        fellowships,
+        content: fellowships,
       })
     );
   }
